@@ -42,8 +42,20 @@ public class HitController {
                                        @RequestParam(name = "end") Timestamp end,
                                        @RequestParam(name = "uris", defaultValue = "") List<String> uris,
                                        @RequestParam(value = "unique", required = false, defaultValue = "false") Boolean unique) {
-        log.info("Request receive GET /stats startTime = {}, endTime = {}, uris = {}, unique = {}", start, end, uris, unique);
+        log.info("Request receive GET /stats startTime = {}, endTime = {}, uris = {}, unique = {}",
+                start,
+                end,
+                uris,
+                unique);
         List<Hit> hits = service.getStats(start, end, uris, unique);
-        return hits.stream().map(h -> new OutputHitDto(h.getApp(), h.getUri(), h.getHits())).collect(Collectors.toList());
+        if (hits == null) {
+            return null;
+        }
+        return hits.stream()
+                .map(h -> new OutputHitDto(
+                        h.getApp(),
+                        h.getUri(),
+                        h.getHits()))
+                .collect(Collectors.toList());
     }
 }

@@ -17,6 +17,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>client</module>
         <module>server</module>
         <module>dto</module>
     </modules>

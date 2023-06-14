@@ -24,8 +24,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Hit {
-    @Transient
-    long hits;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -41,6 +40,8 @@ public class Hit {
     @NotNull(message = "The field Timestamp can not be null")
     @PastOrPresent(message = "The field timestamp can not be on the future")
     private Timestamp timestamp;
+    @Transient
+    long hits;
 
     public Hit(String app, String uri, long hits) {
         this.app = app;
