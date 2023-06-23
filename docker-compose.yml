@@ -12,6 +12,7 @@ services:
 
   stats-server:
     build: stats-service
+    image: stats-service
     container_name: stats-service
     ports:
       - "9090:9090"
