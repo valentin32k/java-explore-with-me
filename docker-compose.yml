@@ -25,6 +25,7 @@ services:
       - DB_HOST=db
       - DB_PORT=5432
       - TZ=Etc/UTC
+      - WAIT_HOSTS=localhost:9090
   #      - TZ=Europe/Moscow
 
 
