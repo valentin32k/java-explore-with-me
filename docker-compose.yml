@@ -22,7 +22,7 @@ services:
       - POSTGRES_DB=stats
       - POSTGRES_USER=statsUser
       - POSTGRES_PASSWORD=statsUserPassword
-      - DB_HOST=db
+      - DB_HOST=localhost
       - DB_PORT=5432
       - TZ=Etc/UTC
       - PORT=9090
