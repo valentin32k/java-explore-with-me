@@ -12,7 +12,6 @@ services:
 
   stats-server:
     build: stats-service
-    image: stats-service
     container_name: stats-service
     ports:
       - "9090:9090"
@@ -22,10 +21,9 @@ services:
       - POSTGRES_DB=stats
       - POSTGRES_USER=statsUser
       - POSTGRES_PASSWORD=statsUserPassword
-      - DB_HOST=localhost
+      - DB_HOST=db
       - DB_PORT=5432
       - TZ=Etc/UTC
-      - PORT=9090
   #      - TZ=Europe/Moscow
 
 

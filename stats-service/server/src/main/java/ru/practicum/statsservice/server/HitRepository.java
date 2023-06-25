@@ -11,14 +11,14 @@ public interface HitRepository extends JpaRepository<Hit, Long> {
             "from Hit h " +
             "where h.timestamp > ?1 and h.timestamp < ?2 and h.uri in ?3 " +
             "group by h.uri " +
-            "order by count (h.id) desc")
+            "order by count (*) desc")
     List<Hit> getUrisStats(Timestamp start, Timestamp end, List<String> uris);
 
     @Query("select new ru.practicum.statsservice.server.Hit(h.app, h.uri, count(h.id)) " +
             "from Hit h " +
             "where h.timestamp > ?1 and h.timestamp < ?2 " +
             "group by h.uri " +
-            "order by count (h.id) desc")
+            "order by count (*) desc")
     List<Hit> getAllStats(Timestamp start, Timestamp end);
 
     @Query("select new ru.practicum.statsservice.server.Hit(h.app, h.uri, count(distinct h.uri)) " +

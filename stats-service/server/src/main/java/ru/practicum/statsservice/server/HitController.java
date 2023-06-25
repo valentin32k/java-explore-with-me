@@ -16,7 +16,6 @@ import ru.practicum.statsservice.dto.OutputHitDto;
 import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping
@@ -28,12 +27,7 @@ public class HitController {
     @PostMapping("/hit")
     @ResponseStatus(value = HttpStatus.CREATED)
     public String createHit(@RequestBody @Valid InputHitDto hitDto) {
-        Hit hit = new Hit();
-        hit.setApp(hitDto.getApp());
-        hit.setUri(hitDto.getUri());
-        hit.setIp(hitDto.getIp());
-        hit.setTimestamp(hitDto.getTimestamp());
-        log.info("Creating hit {}", service.createHit(hit));
+        log.info("Creating hit {}", service.createHit(HitMapper.fromInputHitDto(hitDto)));
         return "Информация сохранена";
     }
 
@@ -48,14 +42,6 @@ public class HitController {
                 uris,
                 unique);
         List<Hit> hits = service.getStats(start, end, uris, unique);
-        if (hits == null) {
-            return null;
-        }
-        return hits.stream()
-                .map(h -> new OutputHitDto(
-                        h.getApp(),
-                        h.getUri(),
-                        h.getHits()))
-                .collect(Collectors.toList());
+        return HitMapper.toOutputHitDtoList(hits);
     }
 }
