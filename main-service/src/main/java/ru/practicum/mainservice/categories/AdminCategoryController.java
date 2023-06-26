@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.mainservice.categories.dto.CategoryDto;
 import ru.practicum.mainservice.categories.dto.CategoryMapper;
-import ru.practicum.mainservice.categories.dto.InputCategoryDto;
-import ru.practicum.mainservice.categories.dto.OutputCategoryDto;
+import ru.practicum.mainservice.categories.dto.NewCategoryDto;
 
 import javax.validation.Valid;
 
@@ -27,14 +27,11 @@ public class AdminCategoryController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public OutputCategoryDto createCategory(@RequestBody @Valid InputCategoryDto categoryDto) {
-        log.info("Creating category {}", categoryDto);
-        return CategoryMapper
-                .toOutputCategotyDto(
-                        service
-                                .createCategory(
-                                        CategoryMapper
-                                                .fromInputCategoryDto(categoryDto)));
+    public CategoryDto createCategory(@RequestBody @Valid NewCategoryDto newCategoryDto) {
+        log.info("Creating category {}", newCategoryDto);
+        return CategoryMapper.toCategoryDto(
+                service.createCategory(
+                        CategoryMapper.fromNewCategoryDto(newCategoryDto)));
     }
 
     @DeleteMapping("/{catId}")
@@ -45,10 +42,12 @@ public class AdminCategoryController {
     }
 
     @PatchMapping("/{catId}")
-    public OutputCategoryDto updateCategory(@RequestBody @Valid InputCategoryDto categoryDto,
-                                            @PathVariable Long catId) {
+    public CategoryDto updateCategory(@RequestBody @Valid NewCategoryDto newCategoryDto,
+                                      @PathVariable Long catId) {
         log.info("Request received PATCH /admin/categories/{}", catId);
-        Category category = CategoryMapper.fromInputCategoryDto(categoryDto).withId(catId);
-        return CategoryMapper.toOutputCategotyDto(category);
+        Category category = CategoryMapper.fromNewCategoryDto(newCategoryDto);
+        category.setId(catId);
+        return CategoryMapper.toCategoryDto(
+                service.updateCategory(category));
     }
 }

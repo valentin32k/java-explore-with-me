@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.With;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,12 +27,10 @@ import javax.validation.constraints.Size;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @With
     private long id;
 
     @NotBlank
-    @Size(min = 1, max = 50, message = "Name must be longer then 1 and shorter then 255 characters")
+    @Size(min = 1, max = 50, message = "Name must be longer then 1 and shorter then 50 characters")
     @Column(unique = true)
-    @With
     private String name;
 }

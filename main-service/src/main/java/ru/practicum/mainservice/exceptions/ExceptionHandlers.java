@@ -1,6 +1,7 @@
 package ru.practicum.mainservice.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.JDBCException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -8,24 +9,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.validation.ValidationException;
 import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
 @RestControllerAdvice
 public class ExceptionHandlers {
-
-//    @ExceptionHandler
-//    public ResponseEntity<Map<String, String>> badUserException(final RuntimeException e) {
-//        log.warn(e.getMessage());
-//        return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.CONFLICT);
-//    }
-//
-    @ExceptionHandler
-    public ResponseEntity<Map<String, String>> badMethodArgumentsException(final BadMethodArgumentsException e) {
-        log.warn(e.getMessage());
-        return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.BAD_REQUEST);
-    }
 
     @ExceptionHandler
     public ResponseEntity<Map<String, String>> notFoundException(final NotFoundException e) {
@@ -34,21 +24,14 @@ public class ExceptionHandlers {
     }
 
     @ExceptionHandler
-    public ResponseEntity<Map<String, String>> notValidDataException(final MethodArgumentNotValidException e) {
+    public ResponseEntity<Map<String, String>> notValidDataException(final JDBCException e) {
         log.warn(e.getMessage());
         return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.CONFLICT);
     }
-//
-//    @ExceptionHandler
-//    public ResponseEntity<Map<String, String>> unsupportedMethodArgumentException(final MethodArgumentTypeMismatchException e) {
-//        log.warn(e.getMessage());
-//        String requestText = "Unknown state: " + Objects.requireNonNull(e.getValue());
-//        return new ResponseEntity<>(Map.of("error", requestText), HttpStatus.BAD_REQUEST);
-//    }
-//
-//    @ExceptionHandler
-//    public ResponseEntity<Map<String, String>> otherExceptionHandler(final Exception e) {
-//        log.warn(e.getMessage());
-//        return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
+
+    @ExceptionHandler
+    public ResponseEntity<Map<String, String>> validationException(final ValidationException e) {
+        log.warn(e.getMessage());
+        return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
 }

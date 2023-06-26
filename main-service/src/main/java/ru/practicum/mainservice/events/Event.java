@@ -46,7 +46,6 @@ public class Event {
     private String annotation;
 
     @ManyToOne
-    @NotNull(message = "Event must have category")
     @CollectionTable(name = "categories", joinColumns = @JoinColumn(name = "id"))
     @JoinColumn(name = "category_id")
     private Category category;
@@ -55,9 +54,9 @@ public class Event {
     private long confirmedRequests;
 
     @NotNull(message = "The field createOn can not be null")
-    @Column(name = "create_on")
+    @Column(name = "created_on")
     @PastOrPresent
-    private Timestamp createOn;
+    private Timestamp createdOn;
 
     @NotBlank(message = "The field description can not be blank")
     @Size(min = 20, max = 7000, message = "Description must be longer then 20 and shorter then 7000 characters")
@@ -69,43 +68,38 @@ public class Event {
     private Timestamp eventDate;
 
     @ManyToOne
-    @NotNull(message = "Event must have initiator")
     @CollectionTable(name = "users", joinColumns = @JoinColumn(name = "id"))
     @JoinColumn(name = "initiator_id")
     private User initiator;
 
-    private float lat;
+    private Float lat;
 
-    private float lon;
+    private Float lon;
 
-    @NotNull(message = "Available cannot be null")
-    @Column(name = "is_paid", nullable = false)
+    @Column(name = "is_paid")
     private Boolean paid;
 
     @Column(name = "participant_limit")
-    private int participantLimit = 0;
+    private Integer participantLimit = 0;
 
-    @NotNull(message = "The field publishedOn can not be null")
     @Column(name = "published_on")
-    @PastOrPresent
     private Timestamp publishedOn;
 
-    @NotNull(message = "requestModeration cannot be null")
     @Column(name = "request_moderation", nullable = false)
     private Boolean requestModeration = true;
 
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "The field state can not be null")
     private EventState state;
 
-    @NotBlank(message = "The field title can not be blank")
     @Size(min = 3, max = 120, message = "Title must be longer then 3 and shorter then 120 characters")
     private String title;
 
-    private long views;
+    private Long views;
 
     @Transient
-    long categoryId;
+    private Long categoryId;
     @Transient
-    long initiatorId;
+    private Long initiatorId;
+    @Transient
+    private Long participationRequestsCount;
 }

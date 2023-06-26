@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.xml.bind.ValidationException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -21,7 +22,10 @@ public class HitServiceImpl implements HitService {
     }
 
     @Override
-    public List<Hit> getStats(Timestamp start, Timestamp end, List<String> uris, boolean unique) {
+    public List<Hit> getStats(Timestamp start, Timestamp end, List<String> uris, boolean unique) throws ValidationException {
+        if (start.after(end)) {
+            throw new ValidationException("Время начала и окончания выборки указаны не верно");
+        }
         if (uris.isEmpty() && unique) {
             return repository.getAllUniqueUrisStats(start, end);
         }

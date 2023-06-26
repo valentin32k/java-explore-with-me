@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.practicum.mainservice.users.dto.InputUserDto;
-import ru.practicum.mainservice.users.dto.OutputUserDto;
+import ru.practicum.mainservice.users.dto.NewUserRequest;
+import ru.practicum.mainservice.users.dto.UserDto;
 import ru.practicum.mainservice.users.dto.UserMapper;
 
 import javax.validation.Valid;
@@ -28,19 +28,21 @@ public class AdminUserController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public OutputUserDto createUser(@RequestBody @Valid InputUserDto userDto) {
-        log.info("Creating user {}", userDto);
+    public UserDto createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
+        log.info("Creating user {}", newUserRequest);
         return UserMapper
-                .toOutputUserDto(
-                service.createUser(
-                        UserMapper
-                                .fromInputUserDto(userDto)));
+                .toUserDto(
+                        service.createUser(
+                                UserMapper
+                                        .fromNewUserRequest(newUserRequest)));
     }
 
     @GetMapping
-    public List<OutputUserDto> getUsers(@RequestParam(name = "ids") List<Long> ids) {
-        log.info("Request receive GET /admin/users ids = {}", ids);
-        return UserMapper.toOutputUserDtoList(service.getUsers(ids));
+    public List<UserDto> getUsers(@RequestParam(name = "ids", defaultValue = "") List<Long> ids,
+                                  @RequestParam(defaultValue = "0") Integer from,
+                                  @RequestParam(defaultValue = "10") Integer size) {
+        log.info("Request receive GET /admin/users ids = {} from={} size = {}", ids, from, size);
+        return UserMapper.toUserDtoList(service.getUsers(ids, from, size));
     }
 
     @DeleteMapping("/{userId}")

@@ -9,14 +9,14 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Value
-public class InputUserDto {
+public class NewUserRequest {
     @NotBlank(message = "The field name can not be blank")
-    @Size(max = 255, message = "Name must be shorter than 255 characters")
+    @Size(min = 2, max = 250, message = "The field name must be longer then 2 and shorter then 250 characters")
     String name;
 
     @Email(message = "The field email is incorrect ")
     @NotEmpty(message = "The field email can not be empty")
-    @Size(min = 2, max = 255, message = "Name must be longer then 2 and shorter then 255 characters")
+    @Size(min = 6, max = 254, message = "The field email must be longer then 6 and shorter then 254 characters")
     @Column(name = "email", unique = true)
     String email;
 }

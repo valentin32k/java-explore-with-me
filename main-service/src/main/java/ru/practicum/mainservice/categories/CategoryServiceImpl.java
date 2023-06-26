@@ -13,23 +13,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository repository;
+
     @Override
     public Category createCategory(Category category) {
         return repository.save(category);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Category> getCategories(int from, int size) {
-        return repository.findAll(PageRequest.of(from / size, size)).getContent();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Category getCategoryById(long categoryId) {
-        return repository
-                .findById(categoryId)
-                .orElseThrow(() -> new NotFoundException("Категория не найдена или недоступна"));
     }
 
     @Override
@@ -39,7 +26,23 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category updateCategory(Category category) {
-        Category currentCategory = getCategoryById(category.getId());
-        return currentCategory.withName(category.getName());
+        getCategoryById(category.getId());
+        return repository.save(category);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Category> getCategories(int from, int size) {
+        return repository
+                .findAll(PageRequest.of(from / size, size))
+                .getContent();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Category getCategoryById(long categoryId) {
+        return repository
+                .findById(categoryId)
+                .orElseThrow(() -> new NotFoundException("Категория не найдена или недоступна"));
     }
 }

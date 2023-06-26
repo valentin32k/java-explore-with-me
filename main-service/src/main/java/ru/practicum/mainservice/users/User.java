@@ -33,12 +33,12 @@ public class User {
     private long id;
 
     @NotBlank(message = "The field name can not be blank")
-    @Size(min = 2, max = 255, message = "Name must be longer then 2 and shorter then 255 characters")
+    @Size(min = 2, max = 250, message = "The field name must be longer then 2 and shorter then 250 characters")
     private String name;
 
     @Email(message = "The field email is incorrect ")
     @NotEmpty(message = "The field email can not be empty")
-    @Size(max = 255, message = "Email must be shorter than 255 characters")
+    @Size(min = 6, max = 254, message = "The field email must be longer then 6 and shorter then 254 characters")
     @Column(name = "email", unique = true)
     private String email;
 }

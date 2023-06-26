@@ -8,21 +8,25 @@ import java.util.stream.Collectors;
 
 @UtilityClass
 public class CategoryMapper {
-    public Category fromInputCategoryDto(InputCategoryDto inputCategoryDto) {
+    public Category fromNewCategoryDto(NewCategoryDto newCategoryDto) {
         return Category.builder()
-                .name(
-                        inputCategoryDto
-                                .getName())
+                .name(newCategoryDto.getName())
                 .build();
     }
 
-    public OutputCategoryDto toOutputCategotyDto(Category category) {
-        return new OutputCategoryDto(category.getId(), category.getName());
+    public CategoryDto toCategoryDto(Category category) {
+        if (category == null) {
+            return null;
+        }
+        return new CategoryDto(category.getId(), category.getName());
     }
 
-    public List<OutputCategoryDto> toOutputCategoryDtoList(List<Category> categories) {
+    public List<CategoryDto> toCategoryDtoList(List<Category> categories) {
+        if (categories == null) {
+            return null;
+        }
         return categories.stream()
-                .map(CategoryMapper::toOutputCategotyDto)
+                .map(CategoryMapper::toCategoryDto)
                 .collect(Collectors.toList());
     }
 }

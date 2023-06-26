@@ -8,28 +8,35 @@ import java.util.stream.Collectors;
 
 @UtilityClass
 public class UserMapper {
-    public User fromInputUserDto(InputUserDto inputUserDto) {
-        return new User(0,
-                inputUserDto.getName(),
-                inputUserDto.getEmail());
+    public User fromNewUserRequest(NewUserRequest newUserRequest) {
+        return User.builder()
+                .name(newUserRequest.getName())
+                .email(newUserRequest.getEmail())
+                .build();
     }
 
-    public OutputUserDto toOutputUserDto(User user) {
+    public UserDto toUserDto(User user) {
         if (user == null) {
             return null;
         }
-        return new OutputUserDto(user.getId(),
+        return new UserDto(user.getId(),
                 user.getName(),
                 user.getEmail());
     }
 
-    public List<OutputUserDto> toOutputUserDtoList(List<User> users) {
-        if(users == null) {
+    public List<UserDto> toUserDtoList(List<User> users) {
+        if (users == null) {
             return null;
         }
         return users.stream()
-                .map(UserMapper::toOutputUserDto)
+                .map(UserMapper::toUserDto)
                 .collect(Collectors.toList());
     }
 
+    public UserShortDto toUserShortDto(User user) {
+        if (user == null) {
+            return null;
+        }
+        return new UserShortDto(user.getId(), user.getName());
+    }
 }
