@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
-    Page<Event> findAllByInitiator_Id(long initiator_id, PageRequest pageRequest);
+    Page<Event> findAllByInitiator_Id(long initiatorId, PageRequest pageRequest);
 
     Page<Event> findAllByInitiator_IdInAndStateInAndCategory_IdInAndEventDateBetween(
             List<Long> users,
@@ -40,6 +40,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
                                    Timestamp rangeStart,
                                    Timestamp rangeEnd,
                                    PageRequest pageRequest);
+
     @Query("select e from Event e where (upper(e.annotation) like upper(concat('%', ?1, '%')) " +
             "or upper(e.description) like upper(concat('%', ?1, '%'))) " +
             "and e.category.id in ?2 " +
@@ -57,5 +58,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
                                              Timestamp rangeStart,
                                              Timestamp rangeEnd,
                                              PageRequest pageRequest);
+
     Event findEventByIdAndState(Long id, EventState state);
 }

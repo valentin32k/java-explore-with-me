@@ -13,6 +13,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
+
     @Override
     public User createUser(User newUser) {
         return repository.save(newUser);

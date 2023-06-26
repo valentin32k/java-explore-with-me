@@ -157,7 +157,7 @@ public class EventServiceImpl implements EventService {
         List<Event> events;
         if (paid == null && categories.size() != 0) {
             events = repository.searchPublicEventsWithouPaid(text, categories, rangeStart, rangeEnd, pageRequest).getContent();
-        } else if (paid != null && categories.size() != 0){
+        } else if (paid != null && categories.size() != 0) {
             events = repository.searchPublicEvents(text, categories, paid, rangeStart, rangeEnd, pageRequest).getContent();
         } else if (paid == null) {
             events = repository.searchPublicEventsWithouPaidAndCategory(text, rangeStart, rangeEnd, pageRequest).getContent();

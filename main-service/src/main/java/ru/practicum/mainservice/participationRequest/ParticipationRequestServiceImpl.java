@@ -25,6 +25,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     private final ParticipationRequestRepository repository;
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
+
     @Override
     public ParticipationRequest createParticipationRequest(Long userId, Long eventId) {
         Event event = eventRepository
