@@ -21,11 +21,11 @@ public class ExceptionHandlers {
 //        return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.CONFLICT);
 //    }
 //
-//    @ExceptionHandler
-//    public ResponseEntity<Map<String, String>> badMethodArgumentsException(final BadMethodArgumentsException e) {
-//        log.warn(e.getMessage());
-//        return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.BAD_REQUEST);
-//    }
+    @ExceptionHandler
+    public ResponseEntity<Map<String, String>> badMethodArgumentsException(final BadMethodArgumentsException e) {
+        log.warn(e.getMessage());
+        return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler
     public ResponseEntity<Map<String, String>> notFoundException(final NotFoundException e) {
@@ -33,11 +33,11 @@ public class ExceptionHandlers {
         return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
-//    @ExceptionHandler
-//    public ResponseEntity<Map<String, String>> notValidDataException(final MethodArgumentNotValidException e) {
-//        log.warn(e.getMessage());
-//        return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.BAD_REQUEST);
-//    }
+    @ExceptionHandler
+    public ResponseEntity<Map<String, String>> notValidDataException(final MethodArgumentNotValidException e) {
+        log.warn(e.getMessage());
+        return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.CONFLICT);
+    }
 //
 //    @ExceptionHandler
 //    public ResponseEntity<Map<String, String>> unsupportedMethodArgumentException(final MethodArgumentTypeMismatchException e) {
