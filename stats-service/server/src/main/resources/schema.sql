@@ -6,3 +6,4 @@ CREATE TABLE IF NOT EXISTS hit
     ip        VARCHAR(15)                                         NOT NULL,
     timestamp TIMESTAMP WITHOUT TIME ZONE                         NOT NULL
 );
+CREATE INDEX ON hit(timestamp)
