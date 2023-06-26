@@ -218,8 +218,6 @@ public class EventServiceImpl implements EventService {
 
     private Long writeStat(String uri, String ip) throws IOException, InterruptedException {
         StatsClient client = new StatsClient("http://stats-service:9090");
-//        StatsClient client = new StatsClient("http://localhost:9090");
-
         try {
             client.createHit(
                     new InputHitDto("ewm-main-service", uri, ip, Timestamp.valueOf(LocalDateTime.now())));

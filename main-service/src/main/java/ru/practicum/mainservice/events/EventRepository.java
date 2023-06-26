@@ -55,11 +55,9 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "or upper(e.description) like upper(concat('%', ?1, '%'))) " +
             "and e.eventDate between ?2 and ?3 ")
     Page<Event> searchPublicEventsWithouPaidAndCategory(String text,
-                                                        Timestamp rangeStart,
-                                                        Timestamp rangeEnd,
-                                                        PageRequest pageRequest);
+                                             Timestamp rangeStart,
+                                             Timestamp rangeEnd,
+                                             PageRequest pageRequest);
 
     Event findEventByIdAndState(Long id, EventState state);
-
-    List<Event> findAllByIdIn(List<Long> ids);
 }

@@ -24,6 +24,7 @@ public class PublicCompilationController {
         log.info("Request received GET /compilations/{}", compId);
         return CompilationMapper.toCompilationDto(
                 service.getCompilationById(compId));
+
     }
 
     @GetMapping

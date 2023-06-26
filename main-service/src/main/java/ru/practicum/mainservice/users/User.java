@@ -2,8 +2,10 @@ package ru.practicum.mainservice.users;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +20,9 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users", schema = "public")
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

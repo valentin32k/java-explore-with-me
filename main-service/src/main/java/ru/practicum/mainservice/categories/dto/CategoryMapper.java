@@ -9,7 +9,9 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class CategoryMapper {
     public Category fromNewCategoryDto(NewCategoryDto newCategoryDto) {
-        return new Category(0L, newCategoryDto.getName());
+        return Category.builder()
+                .name(newCategoryDto.getName())
+                .build();
     }
 
     public CategoryDto toCategoryDto(Category category) {
