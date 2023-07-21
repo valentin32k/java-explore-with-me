@@ -2,10 +2,8 @@ package ru.practicum.mainservice.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import ru.practicum.mainservice.categories.Category;
 import ru.practicum.mainservice.users.User;
 
@@ -30,9 +28,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "events", schema = "public")
-@Getter
-@Setter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

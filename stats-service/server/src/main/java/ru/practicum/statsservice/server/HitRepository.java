@@ -10,28 +10,28 @@ public interface HitRepository extends JpaRepository<Hit, Long> {
     @Query("select new ru.practicum.statsservice.server.Hit(h.app, h.uri, count(h.id)) " +
             "from Hit h " +
             "where h.timestamp > ?1 and h.timestamp < ?2 and h.uri in ?3 " +
-            "group by h.uri " +
-            "order by count (*) desc")
+            "group by h.uri, h.app " +
+            "order by count (h.uri) desc")
     List<Hit> getUrisStats(Timestamp start, Timestamp end, List<String> uris);
 
     @Query("select new ru.practicum.statsservice.server.Hit(h.app, h.uri, count(h.id)) " +
             "from Hit h " +
             "where h.timestamp > ?1 and h.timestamp < ?2 " +
-            "group by h.uri " +
-            "order by count (*) desc")
+            "group by h.uri, h.app " +
+            "order by count (h.uri) desc")
     List<Hit> getAllStats(Timestamp start, Timestamp end);
 
     @Query("select new ru.practicum.statsservice.server.Hit(h.app, h.uri, count(distinct h.uri)) " +
             "from Hit h " +
             "where h.timestamp > ?1 and h.timestamp < ?2 and h.uri in ?3 " +
-            "group by h.uri " +
+            "group by h.uri, h.app " +
             "order by count (distinct h.uri) desc")
     List<Hit> getUniqueUrisStats(Timestamp start, Timestamp end, List<String> uris);
 
     @Query("select new ru.practicum.statsservice.server.Hit(h.app, h.uri, count(distinct h.uri)) " +
             "from Hit h " +
             "where h.timestamp > ?1 and h.timestamp < ?2 " +
-            "group by h.uri " +
+            "group by h.uri, h.app " +
             "order by count (distinct h.uri) desc")
     List<Hit> getAllUniqueUrisStats(Timestamp start, Timestamp end);
 }

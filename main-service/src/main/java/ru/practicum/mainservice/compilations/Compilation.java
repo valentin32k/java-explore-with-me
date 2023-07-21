@@ -2,10 +2,8 @@ package ru.practicum.mainservice.compilations;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import ru.practicum.mainservice.events.Event;
 
 import javax.persistence.Entity;
@@ -20,9 +18,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "compilations", schema = "public")
-@Getter
-@Setter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -36,6 +32,8 @@ public class Compilation {
     private String title;
 
     private Boolean pinned = false;
+
+    private String eventIdsString;
 
     @Transient
     private List<Long> eventIds;

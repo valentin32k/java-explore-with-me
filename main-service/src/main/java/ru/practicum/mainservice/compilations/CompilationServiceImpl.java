@@ -8,38 +8,33 @@ import ru.practicum.mainservice.events.Event;
 import ru.practicum.mainservice.events.EventRepository;
 import ru.practicum.mainservice.exceptions.NotFoundException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringJoiner;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class CompilationServiceImpl implements CompilationService {
     private final CompilationRepository compilationRepository;
-    private final EventsInCompilationsRepository eventsInCompilationsRepository;
     private final EventRepository eventRepository;
 
     @Override
     public Compilation createCompilation(Compilation newCompilation) {
-        newCompilation = compilationRepository.save(newCompilation);
-        if (newCompilation.getEventIds() == null) {
-            return getCompilationById(newCompilation.getId());
+        if (newCompilation.getEventIds() != null) {
+            updateCompilationEvents(newCompilation, newCompilation.getEventIds());
         }
-        Compilation finalNewCompilation = newCompilation;
-        newCompilation.getEventIds().forEach(eid ->
-                eventsInCompilationsRepository.save(
-                        new EventsInCompilations(0,
-                                eventRepository
-                                        .findById(eid)
-                                        .orElseThrow(() -> new NotFoundException("Not found event with id = " + eid)),
-                                finalNewCompilation)));
-        return getCompilationById(newCompilation.getId());
+        return compilationRepository.save(newCompilation);
     }
 
     @Override
     public void removeCompilation(Long compId) {
         compilationRepository.deleteById(compId);
-        eventsInCompilationsRepository.deleteAllByCompilation_Id(compId);
     }
 
     @Override
@@ -54,14 +49,7 @@ public class CompilationServiceImpl implements CompilationService {
             newCompilation.setPinned(compilation.getPinned());
         }
         if (compilation.getEventIds() != null) {
-            eventsInCompilationsRepository.deleteAllByCompilation_Id(compilation.getId());
-            compilation.getEventIds().forEach(eid ->
-                    eventsInCompilationsRepository.save(
-                            new EventsInCompilations(0,
-                                    eventRepository
-                                            .findById(eid)
-                                            .orElseThrow(() -> new NotFoundException("Not found event with id = " + eid)),
-                                    newCompilation)));
+            updateCompilationEvents(newCompilation, compilation.getEventIds());
         }
         return newCompilation;
     }
@@ -72,7 +60,11 @@ public class CompilationServiceImpl implements CompilationService {
         Compilation compilation = compilationRepository
                 .findById(compId)
                 .orElseThrow(() -> new NotFoundException("Not found compilation with id = " + compId));
-        compilation.setEvents(getCompilationEvents(compId));
+        if (compilation.getEventIdsString() != null && !compilation.getEventIdsString().isBlank()) {
+            List<Long> eventIds = new ArrayList<>();
+            Arrays.stream(compilation.getEventIdsString().split(",")).forEach(s -> eventIds.add(Long.valueOf(s)));
+            updateCompilationEvents(compilation, eventIds);
+        }
         return compilation;
     }
 
@@ -82,16 +74,36 @@ public class CompilationServiceImpl implements CompilationService {
         List<Compilation> compilations = compilationRepository
                 .findAllByPinned(pinned, PageRequest.of(from / size, size))
                 .getContent();
-        compilations.forEach(
-                c -> c.setEvents(this.getCompilationEvents(c.getId())));
+        Set<Long> eventIds = new HashSet<>();
+        compilations.forEach(c -> {
+            if (c.getEventIdsString() != null && !c.getEventIdsString().isBlank()) {
+                Arrays.stream(c.getEventIdsString().split(",")).forEach(s -> eventIds.add(Long.valueOf(s)));
+            }
+        });
+        List<Event> events = eventRepository.findAllByIdIn(new ArrayList<>(eventIds));
+        if (events != null) {
+            Map<Long, Event> eventsByIds = new HashMap<>();
+            events.forEach(e -> eventsByIds.put(e.getId(), e));
+            compilations.forEach(c -> {
+                if (c.getEventIdsString() != null && !c.getEventIdsString().isBlank()) {
+                    List<Long> compilationIds = new ArrayList<>();
+                    Arrays.stream(c.getEventIdsString().split(",")).forEach(i -> compilationIds.add(Long.valueOf(i)));
+                    c.setEventIds(compilationIds);
+                    List<Event> compilationEvents = new ArrayList<>();
+                    compilationIds.forEach(i -> compilationEvents.add(eventsByIds.get(i)));
+                    c.setEvents(compilationEvents);
+                }
+            });
+        }
         return compilations;
     }
 
-    private List<Event> getCompilationEvents(Long compilationId) {
-        return eventsInCompilationsRepository
-                .getEventsInCompilationsByCompilation_Id(compilationId)
-                .stream()
-                .map(EventsInCompilations::getEvent)
-                .collect(Collectors.toList());
+    private void updateCompilationEvents(Compilation compilation, List<Long> eventIds) {
+        List<Event> events = eventRepository.findAllByIdIn(eventIds);
+        StringJoiner ids = new StringJoiner(",");
+        eventIds.forEach(i -> ids.add(i.toString()));
+        compilation.setEvents(events);
+        compilation.setEventIds(eventIds);
+        compilation.setEventIdsString(ids.toString());
     }
 }
