@@ -14,6 +14,7 @@ import ru.practicum.statsservice.dto.InputHitDto;
 import ru.practicum.statsservice.dto.OutputHitDto;
 
 import javax.validation.Valid;
+import javax.xml.bind.ValidationException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class HitController {
     public List<OutputHitDto> getStats(@RequestParam(name = "start") Timestamp start,
                                        @RequestParam(name = "end") Timestamp end,
                                        @RequestParam(name = "uris", defaultValue = "") List<String> uris,
-                                       @RequestParam(value = "unique", required = false, defaultValue = "false") Boolean unique) {
+                                       @RequestParam(value = "unique", required = false, defaultValue = "false") Boolean unique) throws ValidationException {
         log.info("Request receive GET /stats startTime = {}, endTime = {}, uris = {}, unique = {}",
                 start,
                 end,

@@ -21,16 +21,32 @@ services:
       - POSTGRES_DB=stats
       - POSTGRES_USER=statsUser
       - POSTGRES_PASSWORD=statsUserPassword
-      - DB_HOST=db
+      - DB_HOST=stats-db
       - DB_PORT=5432
       - TZ=Etc/UTC
-  #      - TZ=Europe/Moscow
 
+  ewm-service:
+    build: main-service
+    container_name: main-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - stats-server
+      - ewm-db
+    environment:
+      - POSTGRES_DB=main
+      - POSTGRES_USER=mainUser
+      - POSTGRES_PASSWORD=mainUserPassword
+      - DB_HOST=ewm-db
+      - DB_PORT=5432
+      - TZ=Etc/UTC
 
-
-#  ewm-service:
-#    ports:
-#      - "8080:8080"
-#
-#  ewm-db:
-#    image: postgres:14-alpine
+  ewm-db:
+    image: postgres:14-alpine
+    container_name: main-db
+    ports:
+      - "1234:5432"
+    environment:
+      - POSTGRES_DB=main
+      - POSTGRES_USER=mainUser
+      - POSTGRES_PASSWORD=mainUserPassword

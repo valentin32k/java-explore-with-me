@@ -1,9 +1,8 @@
 package ru.practicum.statsservice.server;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,8 +18,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "hit", schema = "public")
-@Setter
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Hit {
