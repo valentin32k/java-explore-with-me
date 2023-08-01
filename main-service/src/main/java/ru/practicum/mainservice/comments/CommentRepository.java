@@ -32,4 +32,19 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             Timestamp start,
             Timestamp end,
             PageRequest request);
+
+    Page<Comment> findAllByEvent_IdIn(
+            List<Long> eventIds,
+            PageRequest request);
+
+    Page<Comment> findAllByAuthor_IdIn(
+            List<Long> authorIds,
+            PageRequest request);
+
+    Page<Comment> findAllByEvent_IdInAndAuthor_IdIn(
+            List<Long> eventIds,
+            List<Long> authorIds,
+            PageRequest request);
+
+    void deleteCommentByIdAndAuthorId(long commentId, long authorId);
 }

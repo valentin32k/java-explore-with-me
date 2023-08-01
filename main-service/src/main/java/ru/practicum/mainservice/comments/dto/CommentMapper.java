@@ -18,9 +18,10 @@ public class CommentMapper {
         commentDto.setId(comment.getId());
         commentDto.setText(comment.getText());
         commentDto.setAuthorName(comment.getAuthor().getName());
-        if (comment.getUpdater() != null && comment.getUpdated() != null) {
-            commentDto.setUpdaterName(comment.getUpdater().getName());
-            commentDto.setUpdated(comment.getUpdated().toLocalDateTime());
+        commentDto.setCreated(comment.getCreated().toLocalDateTime());
+        if (comment.getLastUpdatedAt() != null && comment.getLastUpdatedBy() != null) {
+            commentDto.setLastUpdatedBy(comment.getLastUpdatedBy().getName());
+            commentDto.setLastUpdatedAt(comment.getLastUpdatedAt().toLocalDateTime());
         }
         return commentDto;
     }

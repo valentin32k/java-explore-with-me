@@ -14,6 +14,7 @@ import ru.practicum.mainservice.users.User;
 import ru.practicum.mainservice.users.UserRepository;
 
 import java.sql.Timestamp;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,11 +29,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment createComment(String commentText, long userId, long eventId) {
         Event event = eventRepository
-                .findById(eventId)
-                .orElseThrow(() -> new NotFoundException("Can not find event with id = " + eventId));
+                .findById(eventId).get();
         User user = userRepository
-                .findById(userId)
-                .orElseThrow(() -> new NotFoundException("Can not find user with id = " + userId));
+                .findById(userId).get();
         if (!event.getState().equals(EventState.PUBLISHED)) {
             throw new NotValidDataException("You can't comment on an event before it's published");
         }
@@ -42,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
                         commentText,
                         event,
                         user,
-                        Timestamp.valueOf(LocalDateTime.now()),
+                        Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())),
                         null,
                         null));
     }
@@ -57,14 +56,22 @@ public class CommentServiceImpl implements CommentService {
                                      Integer size) {
         List<Comment> comments;
         PageRequest request = PageRequest.of(from / size, size, Sort.by(Sort.Direction.DESC, "created"));
-        if (users.isEmpty() && events.isEmpty()) {
+        if (users.isEmpty() && events.isEmpty() && rangeStart != null && rangeEnd != null) {
             comments = repository.findAllByCreatedBetween(rangeStart, rangeEnd, request).getContent();
-        } else if (users.isEmpty()) {
+        } else if (users.isEmpty() && rangeStart != null && rangeEnd != null) {
             comments = repository.findAllByEvent_IdInAndCreatedBetween(events, rangeStart, rangeEnd, request).getContent();
-        } else if (events.isEmpty()) {
+        } else if (events.isEmpty() && rangeStart != null && rangeEnd != null) {
             comments = repository.findAllByAuthor_IdInAndCreatedBetween(users, rangeStart, rangeEnd, request).getContent();
-        } else {
+        } else if (rangeStart != null && rangeEnd != null) {
             comments = repository.findAllByEvent_IdInAndAuthor_IdInAndCreatedBetween(events, users, rangeStart, rangeEnd, request).getContent();
+        } else if (users.isEmpty() && events.isEmpty()) {
+            comments = repository.findAll(request).getContent();
+        } else if (users.isEmpty()) {
+            comments = repository.findAllByEvent_IdIn(events, request).getContent();
+        } else if (events.isEmpty()) {
+            comments = repository.findAllByAuthor_IdIn(users, request).getContent();
+        } else {
+            comments = repository.findAllByEvent_IdInAndAuthor_IdIn(events, users, request).getContent();
         }
         return comments;
     }
@@ -81,19 +88,17 @@ public class CommentServiceImpl implements CommentService {
             throw new NotValidDataException("Only comment author or admin can updated the comment");
         }
         updatedComment.setText(commentText);
-        updatedComment.setUpdater(updater);
-        updatedComment.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+        updatedComment.setLastUpdatedBy(updater);
+        updatedComment.setLastUpdatedAt(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
         return updatedComment;
     }
 
     @Override
     public void removeCommentById(long userId, long commentId, boolean isRemovedByAdmin) {
-        Comment comment = repository
-                .findById(commentId)
-                .orElseThrow(() -> new NotFoundException("Can not find comment with id = " + commentId));
-        if (comment.getAuthor().getId() != userId && !isRemovedByAdmin) {
-            throw new NotValidDataException("Only comment author or admin can remove the comment");
+        if (isRemovedByAdmin) {
+            repository.deleteById(commentId);
+        } else {
+            repository.deleteCommentByIdAndAuthorId(commentId, userId);
         }
-        repository.deleteById(commentId);
     }
 }

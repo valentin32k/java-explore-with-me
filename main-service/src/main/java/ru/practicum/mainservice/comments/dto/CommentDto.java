@@ -12,6 +12,6 @@ public class CommentDto {
     String text;
     String authorName;
     LocalDateTime created;
-    String updaterName;
-    LocalDateTime updated;
+    String lastUpdatedBy;
+    LocalDateTime lastUpdatedAt;
 }

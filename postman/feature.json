@@ -82,6 +82,11 @@
 								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "X-Explorer-Requestor-Id",
+								"value": "{{uid}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -94,22 +99,17 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/:userId/events/:eventId/comment",
+							"raw": "{{baseUrl}}/users/events/:eventId/comment",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								":userId",
 								"events",
 								":eventId",
 								"comment"
 							],
 							"variable": [
-								{
-									"key": "userId",
-									"value": "{{uid}}"
-								},
 								{
 									"key": "eventId",
 									"value": "{{eid}}"
@@ -210,6 +210,11 @@
 								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "X-Explorer-Requestor-Id",
+								"value": "{{uid}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -222,23 +227,18 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/:userId/events/:eventId/comment/:commentId",
+							"raw": "{{baseUrl}}/users/events/:eventId/comment/:commentId",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								":userId",
 								"events",
 								":eventId",
 								"comment",
 								":commentId"
 							],
 							"variable": [
-								{
-									"key": "userId",
-									"value": "{{uid}}"
-								},
 								{
 									"key": "eventId",
 									"value": "{{eid}}"
@@ -316,10 +316,10 @@
 									"});\r",
 									"let body\r",
 									"const req = {\r",
-									"                url: \"http://localhost:8080/users/\"+pm.collectionVariables.get(\"uid\") + \"/events/\" + pm.collectionVariables.get(\"eid\") + \"/comment/user\",\r",
+									"                url: \"http://localhost:8080/events/\" + pm.collectionVariables.get(\"eid\") + \"/comment\",\r",
 									"                method: \"GET\",\r",
 									"                body: body == null ? \"\" : JSON.stringify(body),\r",
-									"                header: { \"Content-Type\": \"application/json\" },\r",
+									"                header: { \"Content-Type\": \"application/json\", \"X-Explorer-Requestor-Id\": JSON.stringify(userId) },\r",
 									"            };\r",
 									"pm.sendRequest(req, (error, response) => {\r",
 									"    pm.test(\"Комментарий должен быть удалён после выполнения запроса\", function(){\r",
@@ -343,26 +343,26 @@
 								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "X-Explorer-Requestor-Id",
+								"value": "{{uid}}",
+								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/users/:userId/events/:eventId/comment/:commentId",
+							"raw": "{{baseUrl}}/users/events/:eventId/comment/:commentId",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								":userId",
 								"events",
 								":eventId",
 								"comment",
 								":commentId"
 							],
 							"variable": [
-								{
-									"key": "userId",
-									"value": "{{uid}}"
-								},
 								{
 									"key": "eventId",
 									"value": "{{eid}}"
@@ -464,26 +464,25 @@
 								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "X-Explorer-Requestor-Id",
+								"value": "{{uid}}",
+								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/users/:userId/events/:eventId/comment/user",
+							"raw": "{{baseUrl}}/users/events/:eventId/comment",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								":userId",
 								"events",
 								":eventId",
-								"comment",
-								"user"
+								"comment"
 							],
 							"variable": [
-								{
-									"key": "userId",
-									"value": "{{uid}}"
-								},
 								{
 									"key": "eventId",
 									"value": "{{eid}}"
@@ -582,17 +581,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/users/:userId/events/:eventId/comment/event?from=3&size=2",
+							"raw": "{{baseUrl}}/events/:eventId/comment?from=3&size=2",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"users",
-								":userId",
 								"events",
 								":eventId",
-								"comment",
-								"event"
+								"comment"
 							],
 							"query": [
 								{
@@ -605,10 +601,6 @@
 								}
 							],
 							"variable": [
-								{
-									"key": "userId",
-									"value": "{{uid}}"
-								},
 								{
 									"key": "eventId",
 									"value": "{{eid}}"
@@ -706,20 +698,23 @@
 								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "X-Explorer-Requestor-Id",
+								"value": "{{uid}}",
+								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/users/:userId/events/:eventId/comment/event?from=4&size=2",
+							"raw": "{{baseUrl}}/users/events/:eventId/comment?from=4&size=2",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								":userId",
 								"events",
 								":eventId",
-								"comment",
-								"event"
+								"comment"
 							],
 							"query": [
 								{
@@ -732,10 +727,6 @@
 								}
 							],
 							"variable": [
-								{
-									"key": "userId",
-									"value": "{{uid}}"
-								},
 								{
 									"key": "eventId",
 									"value": "{{eid}}"
@@ -793,8 +784,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 404\", function () {\r",
-									"    pm.response.to.have.status(404);  \r",
+									"pm.test(\"Ответ должен содержать код статуса 500\", function () {\r",
+									"    pm.response.to.have.status(500);  \r",
 									"    pm.response.to.be.withBody;\r",
 									"});\r",
 									""
@@ -815,6 +806,11 @@
 								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "X-Explorer-Requestor-Id",
+								"value": "{{uid}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -827,22 +823,17 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/:userId/events/:eventId/comment",
+							"raw": "{{baseUrl}}/users/events/:eventId/comment",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								":userId",
 								"events",
 								":eventId",
 								"comment"
 							],
 							"variable": [
-								{
-									"key": "userId",
-									"value": "{{uid}}"
-								},
 								{
 									"key": "eventId",
 									"value": "{{eid}}"
@@ -900,8 +891,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 404\", function () {\r",
-									"    pm.response.to.have.status(404);  \r",
+									"pm.test(\"Ответ должен содержать код статуса 500\", function () {\r",
+									"    pm.response.to.have.status(500);  \r",
 									"    pm.response.to.be.withBody;\r",
 									"});\r",
 									"\r",
@@ -923,6 +914,11 @@
 								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "X-Explorer-Requestor-Id",
+								"value": "{{uid}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -935,22 +931,17 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/:userId/events/:eventId/comment",
+							"raw": "{{baseUrl}}/users/events/:eventId/comment",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								":userId",
 								"events",
 								":eventId",
 								"comment"
 							],
 							"variable": [
-								{
-									"key": "userId",
-									"value": "{{uid}}"
-								},
 								{
 									"key": "eventId",
 									"value": "{{eid}}"
@@ -1049,23 +1040,16 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/users/:userId/events/:eventId/comment/event",
+							"raw": "{{baseUrl}}/events/:eventId/comment",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"users",
-								":userId",
 								"events",
 								":eventId",
-								"comment",
-								"event"
+								"comment"
 							],
 							"variable": [
-								{
-									"key": "userId",
-									"value": "{{uid}}"
-								},
 								{
 									"key": "eventId",
 									"value": "{{eid}}"
@@ -1080,241 +1064,6 @@
 		{
 			"name": "AdminCommentController",
 			"item": [
-				{
-					"name": "Получить комментарии пользователей",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"const main = async () => {\r",
-									"    const api = new API(pm);\r",
-									"    const rnd = new RandomUtils();\r",
-									"\r",
-									"    let event;\r",
-									"    try {\r",
-									"        const admin = await api.addUser(rnd.getUser());\r",
-									"        pm.collectionVariables.set(\"eid\", admin.id)\r",
-									"        const user1 = await api.addUser(rnd.getUser());\r",
-									"        const user2 = await api.addUser(rnd.getUser());\r",
-									"        pm.collectionVariables.set(\"uid\", user1.id + \"&user=\" + user2.id)\r",
-									"        const category = await api.addCategory(rnd.getCategory());\r",
-									"        const event = await api.addEvent(user1.id, rnd.getEvent(category.id));\r",
-									"        await api.publishEvent(event.id);\r",
-									"        for (let i = 0; i < 8; i++) {\r",
-									"            await api.addComment(user1.id, event.id, rnd.getComment());\r",
-									"            await api.addComment(user2.id, event.id, rnd.getComment());\r",
-									"        }    \r",
-									"         \r",
-									"    } catch(err) {\r",
-									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
-									"    }\r",
-									"};\r",
-									"\r",
-									"const interval = setInterval(() => {}, 1000);\r",
-									"\r",
-									"setTimeout(async () => \r",
-									"    {\r",
-									"        try {\r",
-									"            await main();\r",
-									"        } catch (e) {\r",
-									"            console.error(e);\r",
-									"        } finally {\r",
-									"            clearInterval(interval);\r",
-									"        }\r",
-									"    },  \r",
-									"    100 \r",
-									");"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(200);  \r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const target = pm.response.json();\r",
-									"const source = pm.collectionVariables.get('source');\r",
-									"\r",
-									"pm.test(\"Событие должно содержать поля: id, text, authorName, created\", function () {\r",
-									"pm.expect(target[0]).to.have.property('id');\r",
-									"pm.expect(target[0]).to.have.property('text');\r",
-									"pm.expect(target[0]).to.have.property('authorName');\r",
-									"pm.expect(target[0]).to.have.property('created');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Значение size по-умолчанию должно быть равным 10\", function () {\r",
-									"    pm.expect(target.length).to.be.equal(10);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/admin/:adminId/comments?user={{uid}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"admin",
-								":adminId",
-								"comments"
-							],
-							"query": [
-								{
-									"key": "user",
-									"value": "{{uid}}"
-								}
-							],
-							"variable": [
-								{
-									"key": "adminId",
-									"value": "{{eid}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Получить комментарии к событиям",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"const main = async () => {\r",
-									"    const api = new API(pm);\r",
-									"    const rnd = new RandomUtils();\r",
-									"\r",
-									"    let event;\r",
-									"    try {\r",
-									"        const admin = await api.addUser(rnd.getUser());\r",
-									"        pm.collectionVariables.set(\"uid\", admin.id)\r",
-									"        const user = await api.addUser(rnd.getUser());\r",
-									"        const category = await api.addCategory(rnd.getCategory());\r",
-									"        const event1 = await api.addEvent(user.id, rnd.getEvent(category.id));\r",
-									"        const event2 = await api.addEvent(user.id, rnd.getEvent(category.id));\r",
-									"        await api.publishEvent(event1.id);\r",
-									"        await api.publishEvent(event2.id);\r",
-									"        pm.collectionVariables.set(\"eid\", event1.id+\"&events=\" + event2.id)\r",
-									"        for (let i = 0; i < 8; i++) {\r",
-									"            await api.addComment(user.id, event1.id, rnd.getComment());\r",
-									"            await api.addComment(user.id, event2.id, rnd.getComment());\r",
-									"        }    \r",
-									"         \r",
-									"    } catch(err) {\r",
-									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
-									"    }\r",
-									"};\r",
-									"\r",
-									"const interval = setInterval(() => {}, 1000);\r",
-									"\r",
-									"setTimeout(async () => \r",
-									"    {\r",
-									"        try {\r",
-									"            await main();\r",
-									"        } catch (e) {\r",
-									"            console.error(e);\r",
-									"        } finally {\r",
-									"            clearInterval(interval);\r",
-									"        }\r",
-									"    },  \r",
-									"    100 \r",
-									");"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(200);  \r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const target = pm.response.json();\r",
-									"const source = pm.collectionVariables.get('source');\r",
-									"\r",
-									"pm.test(\"Событие должно содержать поля: id, text, authorName, created\", function () {\r",
-									"pm.expect(target[0]).to.have.property('id');\r",
-									"pm.expect(target[0]).to.have.property('text');\r",
-									"pm.expect(target[0]).to.have.property('authorName');\r",
-									"pm.expect(target[0]).to.have.property('created');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Значение size по-умолчанию должно быть равным 10\", function () {\r",
-									"    pm.expect(target.length).to.be.equal(10);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/admin/:adminId/comments?events={{eid}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"admin",
-								":adminId",
-								"comments"
-							],
-							"query": [
-								{
-									"key": "events",
-									"value": "{{eid}}"
-								}
-							],
-							"variable": [
-								{
-									"key": "adminId",
-									"value": "{{uid}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Редактирование комментария администратором",
 					"event": [
@@ -1405,6 +1154,11 @@
 								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "X-Explorer-Requestor-Id",
+								"value": "{{uid}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -1417,21 +1171,16 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/admin/:adminId/comments/:commentId",
+							"raw": "{{baseUrl}}/admin/comments/:commentId",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"admin",
-								":adminId",
 								"comments",
 								":commentId"
 							],
 							"variable": [
-								{
-									"key": "adminId",
-									"value": "{{uid}}"
-								},
 								{
 									"key": "commentId",
 									"value": "{{cid}}"
@@ -1507,10 +1256,10 @@
 									"});\r",
 									"let body\r",
 									"const req = {\r",
-									"                url: \"http://localhost:8080/users/\"+pm.collectionVariables.get(\"uid\") + \"/events/\" + pm.collectionVariables.get(\"eid\") + \"/comment/user\",\r",
+									"                url: \"http://localhost:8080/events/\" + pm.collectionVariables.get(\"eid\") + \"/comment\",\r",
 									"                method: \"GET\",\r",
 									"                body: body == null ? \"\" : JSON.stringify(body),\r",
-									"                header: { \"Content-Type\": \"application/json\" },\r",
+									"                header: { \"Content-Type\": \"application/json\", \"X-Explorer-Requestor-Id\": JSON.stringify(userId) },\r",
 									"            };\r",
 									"pm.sendRequest(req, (error, response) => {\r",
 									"    pm.test(\"Комментарий должен быть удалён после выполнения запроса\", function(){\r",
@@ -1534,24 +1283,24 @@
 								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "X-Explorer-Requestor-Id",
+								"value": "{{uid1}}",
+								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/admin/:adminId/comments/:commentId",
+							"raw": "{{baseUrl}}/admin/comments/:commentId",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"admin",
-								":adminId",
 								"comments",
 								":commentId"
 							],
 							"variable": [
-								{
-									"key": "adminId",
-									"value": "{{uid1}}"
-								},
 								{
 									"key": "commentId",
 									"value": "{{cid}}"
@@ -1594,7 +1343,7 @@
 					"    }",
 					"",
 					"    async addComment(userId, eventId, comment, verbose=null) {",
-					"        return this.post(\"/users/\" + userId + \"/events/\" + eventId + \"/comment\", comment, verbose=null);",
+					"        return this.postX(\"/users/events/\" + eventId + \"/comment\", comment, userId, verbose=null);",
 					"    }",
 					"",
 					"    async publishParticipationRequest(eventId, userId, verbose=null) {",
@@ -1630,11 +1379,15 @@
 					"    }",
 					"",
 					"    async findUserComments(userId, eventId, verbose=null) {",
-					"        return this.get(\"/users/\" + userId + \"/events/\" + eventId + \"/comment/user\", null, \"Ошибка при поиске комментариев пользователя\", verbose);",
+					"        return this.getX(\"/users/events/\" + eventId + \"/comment\", null, userId, \"Ошибка при поиске комментариев пользователя\", verbose);",
 					"    }",
 					"",
 					"    async post(path, body, errorText = \"Ошибка при выполнении post-запроса: \", verbose=null) {",
 					"        return this.sendRequest(\"POST\", path, body, errorText, verbose);",
+					"    }",
+					"",
+					"    async postX(path, body, userId, errorText = \"Ошибка при выполнении post-запроса: \", verbose=null) {",
+					"        return this.sendXRequest(\"POST\", path, body, userId, errorText, verbose);",
 					"    }",
 					"",
 					"    async patch(path, body = null, errorText = \"Ошибка при выполнении patch-запроса: \", verbose=null) {",
@@ -1643,6 +1396,10 @@
 					"",
 					"    async get(path, body = null, errorText = \"Ошибка при выполнении get-запроса: \", verbose=null) {",
 					"        return this.sendRequest(\"GET\", path, body, errorText, verbose);",
+					"    }",
+					"",
+					"    async getX(path, body = null, userId, errorText = \"Ошибка при выполнении get-запроса: \", verbose=null) {",
+					"        return this.sendXRequest(\"GET\", path, body, userId, errorText, verbose);",
 					"    }",
 					"",
 					"    async sendRequest(method, path, body=null, errorText = \"Ошибка при выполнении запроса: \", verbose=null) {",
@@ -1654,6 +1411,47 @@
 					"                method: method,",
 					"                body: body == null ? \"\" : JSON.stringify(body),",
 					"                header: { \"Content-Type\": \"application/json\" },",
+					"            };",
+					"",
+					"            if(verbose) {",
+					"                console.log(\"Отправляю запрос: \", request);",
+					"            }",
+					"",
+					"            try {",
+					"                this.pm.sendRequest(request, (error, response) => {",
+					"                    if(error || (response.code >= 400 && response.code <= 599)) {",
+					"                        let err = error ? error : JSON.stringify(response.json());",
+					"                        console.error(\"При выполнении запроса к серверу возникла ошика.\\n\", err,",
+					"                             \"\\nДля отладки проблемы повторите такой же запрос к вашей программе \" + ",
+					"                             \"на локальном компьютере. Данные запроса:\\n\", JSON.stringify(request));",
+					"",
+					"                        reject(new Error(errorText + err));",
+					"                    }",
+					"",
+					"                    if(verbose) {",
+					"                        console.log(\"Результат обработки запроса: код состояния - \", response.code, \", тело: \", response.json());",
+					"                    }",
+					"",
+					"                    resolve(response.json());",
+					"                });",
+					"            } catch(err) {",
+					"                if(verbose) {",
+					"                    console.error(errorText, err);",
+					"                }",
+					"                return Promise.reject(err);",
+					"            }",
+					"        });",
+					"    }",
+					"",
+					"    async sendXRequest(method, path, body=null, userId, errorText = \"Ошибка при выполнении запроса: \", verbose=null) {",
+					"        return new Promise((resolve, reject) => {",
+					"            verbose = verbose == null ? this._verbose : verbose;",
+					"",
+					"            const request = {",
+					"                url: this.baseUrl + path,",
+					"                method: method,",
+					"                body: body == null ? \"\" : JSON.stringify(body),",
+					"                header: { \"Content-Type\": \"application/json\", \"X-Explorer-Requestor-Id\": JSON.stringify(userId) },",
 					"            };",
 					"",
 					"            if(verbose) {",

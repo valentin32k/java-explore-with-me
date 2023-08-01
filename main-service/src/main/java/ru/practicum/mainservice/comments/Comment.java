@@ -51,9 +51,9 @@ public class Comment {
 
     @ManyToOne
     @CollectionTable(name = "users", joinColumns = @JoinColumn(name = "id"))
-    @JoinColumn(name = "updater_id")
-    private User updater;
+    @JoinColumn(name = "last_updated_by")
+    private User lastUpdatedBy;
 
     @PastOrPresent
-    private Timestamp updated;
+    private Timestamp lastUpdatedAt;
 }
